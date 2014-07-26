@@ -165,7 +165,7 @@ $ gulp uninstall
 
 ### 0.1.1 (2014-07-27)
 
-* Exclude 'gulp-pacakge' from uninstall target
+* Exclude 'gulp-pacakges' from uninstall target
 
 ### 0.1.0 (2014-07-26)
 
