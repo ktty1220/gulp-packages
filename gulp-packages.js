@@ -38,7 +38,7 @@ module.exports = function (gulp, packages) {
     for (var i = 0; i < installed.length; i++) {
       if (! /^gulp-/.test(installed[i])) { continue; }
       var m = installed[i].substr(5).replace(/-([a-z])/g, function (m, p) { return p.toUpperCase(); });
-      if (packages.indexOf(m) === -1) { forUninstall.push(installed[i]); }
+      if (packages.indexOf(m) === -1 && m !== 'packages') { forUninstall.push(installed[i]); }
     }
     if (forUninstall.length === 0) {
       return console.log('\nno package for uninstall.\n');
