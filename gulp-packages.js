@@ -1,6 +1,10 @@
+/*jshint node:true,loopfunc:true*/
 module.exports = function (gulp, packages) {
+  'use strict';
+
   gulp._packages = { notInstalled: [], loaded: {} };
 
+  var clc = require('cli-color');
   var cwd = process.cwd();
 
   for (var i = 0; i < packages.length; i++) {
@@ -12,38 +16,45 @@ module.exports = function (gulp, packages) {
     }
   }
 
-  var npmCommand = function(cmd, pkgs) {
+  var npmCommand = function(cmd, pkgs, cb) {
+    if (pkgs.length === 0) {
+      console.info('\n' + clc.blue('no package to ' + cmd) + '\n');
+      return cb();
+    }
     var npm = require('npm');
     npm.load(function (e) {
-      if (e) { return console.error(e.message); }
+      if (e) {
+        console.error('\n' + clc.red(e.message) + '\n');
+        return cb();
+      }
       var saveDev = npm.config.get('save-dev');
       npm.config.set('save-dev', true);
       npm.commands[cmd](pkgs, function (e) {
-        if (e) { console.error(e.message); }
         npm.config.set('save-dev', saveDev);
+        if (e) {
+          console.error('\n' + clc.red(e.message) + '\n');
+        } else {
+          var u = ' package' + ((pkgs.length > 1) ? 's ' : ' ');
+          console.info('\n' + clc.green(pkgs.length + u + cmd + 'ed') + '\n');
+        }
+        cb();
       });
     });
   };
 
-  gulp.task('install', function () {
-    if (gulp._packages.notInstalled.length === 0) {
-      return console.log('\nall package is installed.\n');
-    }
-    npmCommand('install', gulp._packages.notInstalled);
+  gulp.task('install', function (cb) {
+    npmCommand('install', gulp._packages.notInstalled, cb);
   });
 
-  gulp.task('uninstall', function () {
+  gulp.task('uninstall', function (cb) {
     var installed = Object.keys(require(cwd + '/package.json').devDependencies || {});
-    var forUninstall = [];
+    var toUninstall = [];
     for (var i = 0; i < installed.length; i++) {
       if (! /^gulp-/.test(installed[i])) { continue; }
       var m = installed[i].substr(5).replace(/-([a-z])/g, function (m, p) { return p.toUpperCase(); });
-      if (packages.indexOf(m) === -1 && m !== 'packages') { forUninstall.push(installed[i]); }
+      if (packages.indexOf(m) === -1 && m !== 'packages') { toUninstall.push(installed[i]); }
     }
-    if (forUninstall.length === 0) {
-      return console.log('\nno package for uninstall.\n');
-    }
-    npmCommand('uninstall', forUninstall);
+    npmCommand('uninstall', toUninstall, cb);
   });
 
   return gulp._packages.loaded;

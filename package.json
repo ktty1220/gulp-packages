@@ -1,6 +1,6 @@
 {
   "name": "gulp-packages",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "gulp package management helper",
   "main": "./gulp-packages",
   "engines": {
@@ -15,10 +15,13 @@
     "package",
     "helper"
   ],
-   "author": {
+  "author": {
     "name": "ktty1220",
     "email": "ktty1220@gmail.com"
   },
   "license": "MIT",
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "cli-color": "*"
+  }
 }

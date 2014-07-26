@@ -6,6 +6,8 @@
 2. Add 'install' task to your gulpfile
 3. Add 'uninstall' task to your gulpfile
 
+[For more details](http://qiita.com/ktty1220/items/c1c5705c9b0114f29bb9)
+
 ## Install
 
 ```sh
@@ -162,6 +164,13 @@ $ gulp uninstall
 * gulp-minify-css -> 'minifyCss'
 
 ## Changelog
+
+### 0.1.2 (2014-07-27)
+
+* 'install' and 'uninstall' changed to synchronized task
+* support colored message
+* add jshint options comment
+* fix some messages
 
 ### 0.1.1 (2014-07-27)
 
