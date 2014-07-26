@@ -151,6 +151,16 @@ $ npm uninstall gulp-uglify gulp-rename gulp-plumber gulp-concat --save-dev
 $ gulp uninstall
 ```
 
+## Package name rule
+
+1. Remove 'gulp-'
+2. Convert to camel case
+
+### Example
+
+* gulp-uglify -> 'uglify'
+* gulp-minify-css -> 'minifyCss'
+
 ## Changelog
 
 ### 0.1.0 (2014-07-26)
