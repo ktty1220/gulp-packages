@@ -168,9 +168,9 @@ $ gulp uninstall
 ### 0.1.2 (2014-07-27)
 
 * 'install' and 'uninstall' changed to synchronized task
-* support colored message
-* add jshint options comment
-* fix some messages
+* Support colored message
+* Add jshint options comment
+* Fix some messages
 
 ### 0.1.1 (2014-07-27)
 
