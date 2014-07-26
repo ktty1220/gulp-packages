@@ -1,0 +1,24 @@
+{
+  "name": "gulp-packages",
+  "version": "0.1.0",
+  "description": "gulp package management helper",
+  "main": "./gulp-packages",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ktty1220/gulp-packages.git"
+  },
+  "keywords": [
+    "gulp",
+    "package",
+    "helper"
+  ],
+   "author": {
+    "name": "ktty1220",
+    "email": "ktty1220@gmail.com"
+  },
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
