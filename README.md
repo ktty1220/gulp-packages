@@ -1,4 +1,4 @@
-# gulp-packages - gulp package management helper
+# gulp package management helper
 
 ## Features
 
