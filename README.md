@@ -165,16 +165,20 @@ $ gulp uninstall
 
 ## Changelog
 
+### 0.1.3 (2014-07-27)
+
+* Added 'gulpfriendly' keyword to package.json
+
 ### 0.1.2 (2014-07-27)
 
 * 'install' and 'uninstall' changed to synchronized task
-* Support colored message
-* Add jshint options comment
-* Fix some messages
+* Colored message supported
+* Added jshint options comment
+* Fixed some messages
 
 ### 0.1.1 (2014-07-27)
 
-* Exclude 'gulp-packages' from uninstall target
+* Changed to exclude 'gulp-packages' from uninstall target
 
 ### 0.1.0 (2014-07-26)
 

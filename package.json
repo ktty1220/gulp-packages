@@ -1,6 +1,6 @@
 {
   "name": "gulp-packages",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "gulp package management helper",
   "main": "./gulp-packages",
   "engines": {
@@ -12,6 +12,7 @@
   },
   "keywords": [
     "gulp",
+    "gulpfriendly", 
     "package",
     "helper"
   ],
