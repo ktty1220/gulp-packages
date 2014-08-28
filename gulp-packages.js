@@ -8,11 +8,13 @@ module.exports = function (gulp, packages) {
   var cwd = process.cwd();
 
   for (var i = 0; i < packages.length; i++) {
-    var m = 'gulp-' + packages[i].replace(/([A-Z])/g, '-$1').toLowerCase();
+    var m=packages[i].match(/([\w|-]+)[\bas\b]?([\w|-]+)[\S]/g)
+    if(m.length==1) m[1]=m[0]
+    m[0] = 'gulp-' + m[0].replace(/([A-Z])/g, '-$1').toLowerCase();
     try {
-      gulp._packages.loaded[packages[i]] = require(cwd + '/node_modules/' + m);
+      gulp._packages.loaded[m[1]] = require(cwd + '/node_modules/' + m[0]);
     } catch (e) {
-      gulp._packages.notInstalled.push(m);
+      gulp._packages.notInstalled.push(m[0]);
     }
   }
 
