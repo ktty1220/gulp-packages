@@ -44,7 +44,8 @@ var pkg = require('gulp-packages')(gulp, [
   'less',
   'coffee',
   'pleeease',
-  'minifyCss',
+  'minify-css',//MUST call it by pkg.minifyCss()
+  'html-minifier as minHtm',//call it by pkg.minHtm(),pkg.htmlMinifier DOESN'T work!
   'uglify',
   'rename',
   'watch',
@@ -78,7 +79,7 @@ var pkg = require('gulp-packages')(gulp, [
   'less',
   'coffee',
   'pleeease',
-  'minifyCss',
+  'minify-css',
   'uglify',      // <- not installed yet
   'rename',      // <- not installed yet 
   'watch',
@@ -112,7 +113,7 @@ var pkg = require('gulp-packages')(gulp, [
   'less',
   'coffee',
   'pleeease',
-  'minifyCss',
+  'minify-css',
   'watch',
   'coffeelint',
 ]);
@@ -156,12 +157,14 @@ $ gulp uninstall
 ## Package name rule
 
 1. Remove 'gulp-'
-2. Convert to camel case
+2. Convert to camel case when call it
+3. "as" overwrites call name for shorter or else
 
 ### Example
-
-* gulp-uglify -> 'uglify'
-* gulp-minify-css -> 'minifyCss'
+gulp-name -> pkg-name / call-name
+* gulp-uglify -> 'uglify' / uglify()
+* gulp-minify-css -> 'minify-css' / minifyCss()              //MUST call it by pkg.minifyCss()
+* gulp-html-minifier -> 'html-minifier as minHtm' / minHtm() //call it by pkg.htmlMinifier() DOESN'T work!
 
 ## Changelog
 
