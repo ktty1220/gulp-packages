@@ -2,19 +2,22 @@
 module.exports = function (gulp,packages) {
   'use strict';
 
-  var pkg = { notInstalled: [], loaded: {} };
+  var _pkgs = { notInstalled: [], loaded: {} };
 
   var clc = require('cli-color');
   var cwd = process.cwd();
-
+  var camel=function(str){
+    return str.replace(/-([a-z])/g, function (match, char) { return char.toUpperCase(); })
+  }
   for (var i = 0; i < packages.length; i++) {
-    var m=packages[i].match(/([\w|-]+)[\bas\b]?([\w]+)[\S]/g)
-    if(m.length==1) m[1]=m[0].replace(/-([a-z])/g, function (m, p) { return p.toUpperCase(); })
-    m[0] = 'gulp-' + m[0].replace(/([A-Z])/g, '-$1').toLowerCase();
+    var pkg=packages[i].split(/\bas\b/,2);
+    pkg[1]=camel(pkg[pkg.length==2?1:0]);
+    packages[i]=pkg[0];
+    m = 'gulp-' + pkg[0]//.replace(/([A-Z])/g, '-$1').toLowerCase();
     try {
-      pkg.loaded[m[1]] = require(cwd + '/node_modules/' + m[0]);
+      _pkgs.loaded[pkg[1]] = require(cwd + '/node_modules/' + m);
     } catch (e) {
-      gulp._packages.notInstalled.push(m[0]);
+      _pkgs.notInstalled.push(m);
     }
   }
 
@@ -45,7 +48,7 @@ module.exports = function (gulp,packages) {
   };
 
   gulp.task('install', function (cb) {
-    npmCommand('install', gulp._packages.notInstalled, cb);
+    npmCommand('install', _pkgs.notInstalled, cb);
   });
 
   gulp.task('uninstall', function (cb) {
@@ -53,11 +56,11 @@ module.exports = function (gulp,packages) {
     var toUninstall = [];
     for (var i = 0; i < installed.length; i++) {
       if (! /^gulp-/.test(installed[i])) continue;
-      var m = installed[i].substr(5);
-      if (packages.indexOf(m) === -1 && m !== 'packages') { toUninstall.push(installed[i]); }
+      if (installed[i]=='gulp-packages') continue;
+      if (packages.indexOf(installed[i].substr(5)) == -1) toUninstall.push(installed[i]);
     }
     npmCommand('uninstall', toUninstall, cb);
   });
 
-  return gulp._packages.loaded;
+  return _pkgs.loaded;
 };
