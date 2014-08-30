@@ -6,16 +6,19 @@ module.exports = function (gulp, packages) {
 
   var clc = require('cli-color');
   var cwd = process.cwd();
-  var camel = function(str) {
+  var camel = function (str) {
     return str.replace(/-(\w)/g, function (match, char) { return char.toUpperCase(); });
   };
   for (var i = 0; i < packages.length; i++) {
     var pkg = packages[i].split(/\sas\s/, 2);
     pkg[1] = camel(pkg[pkg.length === 2 ? 1 : 0]);
+    pkg[0] = pkg[0].replace(/([A-Z])/g, '-$1').toLowerCase();
     packages[i] = pkg[0];
-    var m = 'gulp-' + pkg[0].replace(/([A-Z])/g, '-$1').toLowerCase();
+    var m = 'gulp-' + pkg[0];
     try {
-      _pkgs.loaded[pkg[1]] = require(cwd + '/node_modules/' + m);
+      if (! _pkgs.loaded[pkg[1]]) {
+        _pkgs.loaded[pkg[1]] = require(cwd + '/node_modules/' + m);
+      }
     } catch (e) {
       _pkgs.notInstalled.push(m);
     }
