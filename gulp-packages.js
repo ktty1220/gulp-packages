@@ -1,18 +1,23 @@
 /*jshint node:true,loopfunc:true*/
-module.exports = function (gulp, packages) {
+module.exports = function (gulp,packages) {
   'use strict';
 
-  gulp._packages = { notInstalled: [], loaded: {} };
+  var _pkgs = { notInstalled: [], loaded: {} };
 
   var clc = require('cli-color');
   var cwd = process.cwd();
-
+  var camel=function(str){
+    return str.replace(/-(\w)/g, function (match, char) { return char.toUpperCase(); })
+  }
   for (var i = 0; i < packages.length; i++) {
-    var m = 'gulp-' + packages[i].replace(/([A-Z])/g, '-$1').toLowerCase();
+    var pkg=packages[i].split(/\sas\s/,2);
+    pkg[1]=camel(pkg[pkg.length==2?1:0]);
+    packages[i]=pkg[0];
+    var m = 'gulp-' + pkg[0]//.replace(/([A-Z])/g, '-$1').toLowerCase();
     try {
-      gulp._packages.loaded[packages[i]] = require(cwd + '/node_modules/' + m);
+      _pkgs.loaded[pkg[1]] = require(cwd + '/node_modules/' + m);
     } catch (e) {
-      gulp._packages.notInstalled.push(m);
+      _pkgs.notInstalled.push(m);
     }
   }
 
@@ -43,19 +48,19 @@ module.exports = function (gulp, packages) {
   };
 
   gulp.task('install', function (cb) {
-    npmCommand('install', gulp._packages.notInstalled, cb);
+    npmCommand('install', _pkgs.notInstalled, cb);
   });
 
   gulp.task('uninstall', function (cb) {
     var installed = Object.keys(require(cwd + '/package.json').devDependencies || {});
     var toUninstall = [];
     for (var i = 0; i < installed.length; i++) {
-      if (! /^gulp-/.test(installed[i])) { continue; }
-      var m = installed[i].substr(5).replace(/-([a-z])/g, function (m, p) { return p.toUpperCase(); });
-      if (packages.indexOf(m) === -1 && m !== 'packages') { toUninstall.push(installed[i]); }
+      if (! /^gulp-/.test(installed[i])) continue;
+      if (installed[i]=='gulp-packages') continue;
+      if (packages.indexOf(installed[i].substr(5)) == -1) toUninstall.push(installed[i]);
     }
     npmCommand('uninstall', toUninstall, cb);
   });
 
-  return gulp._packages.loaded;
+  return _pkgs.loaded;
 };
