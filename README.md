@@ -26,6 +26,8 @@ var less = require('gulp-less');
 var coffee = require('gulp-coffee');
 var pleeease = require('gulp-pleeease');
 var minifyCss = require('gulp-minify-css');
+var taskListing = require('gulp-task-listing');
+var minHtm = require('gulp-html-minifier');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var watch = require('gulp-watch');
@@ -44,8 +46,9 @@ var pkg = require('gulp-packages')(gulp, [
   'less',
   'coffee',
   'pleeease',
-  'minify-css',//MUST call it by pkg.minifyCss()
-  'html-minifier as minHtm',//call it by pkg.minHtm(),pkg.htmlMinifier DOESN'T work!
+  'minify-css',               // MUST call it by pkg.minifyCss()
+  'taskListing',              // CamelCase of package name, call it by pkg.taskListing()
+  'html-minifier as minHtm',  // call it by pkg.minHtm(), pkg.htmlMinifier DOESN'T work!
   'uglify',
   'rename',
   'watch',
@@ -80,19 +83,21 @@ var pkg = require('gulp-packages')(gulp, [
   'coffee',
   'pleeease',
   'minify-css',
-  'uglify',      // <- not installed yet
-  'rename',      // <- not installed yet 
+  'taskListing',
+  'uglify',                   // <- not installed yet
+  'html-minifier as minHtm',  // <- not installed yet
+  'rename',                   // <- not installed yet
   'watch',
-  'plumber',     // <- not installed yet
+  'plumber',                  // <- not installed yet
   'coffeelint',
-  'concat'       // <- not installed yet
+  'concat'                    // <- not installed yet
 ]);
 ```
 
 ### BEFORE
 
 ```sh
-$ npm install gulp-uglify gulp-rename gulp-plumber gulp-concat --save-dev
+$ npm install gulp-uglify gulp-html-minifier gulp-rename gulp-plumber gulp-concat --save-dev
 ```
 
 ### AFTER
@@ -114,6 +119,7 @@ var pkg = require('gulp-packages')(gulp, [
   'coffee',
   'pleeease',
   'minify-css',
+  'taskListing',
   'watch',
   'coffeelint',
 ]);
@@ -128,16 +134,18 @@ __package.json__
   "devDependencies": {
     "coffee-script": "*",
     "gulp": "*",
-    "gulp-coffee": "^2.1.1",
-    "gulp-coffeelint": "^0.3.3",
-    "gulp-concat": "^2.3.4",      // <- no longer using
-    "gulp-less": "^1.3.2",
-    "gulp-minify-css": "^0.3.7",
-    "gulp-pleeease": "0.0.5",
-    "gulp-plumber": "^0.6.4",     // <- no longer using
-    "gulp-rename": "^1.2.0",      // <- no longer using
-    "gulp-uglify": "^0.3.1",      // <- no longer using
-    "gulp-watch": "^0.6.8"
+    "gulp-coffee": "*",
+    "gulp-coffeelint": "*",
+    "gulp-concat": "*",         // <- no longer using
+    "gulp-less": "*",
+    "gulp-minify-css": "*",
+    "gulp-pleeease": "*",
+    "gulp-plumber": "*",        // <- no longer using
+    "gulp-rename": "*",         // <- no longer using
+    "gulp-uglify": "*",         // <- no longer using
+    "gulp-html-minifier": "*",  // <- no longer using
+    "gulp-watch": "*",
+    "gulp-task-listing": "*"
   }
 }
 ```
@@ -145,7 +153,7 @@ __package.json__
 ### BEFORE
 
 ```sh
-$ npm uninstall gulp-uglify gulp-rename gulp-plumber gulp-concat --save-dev
+$ npm uninstall gulp-concat gulp-plumber gulp-rename gulp-uglify gulp-html-minifier --save-dev
 ```
 
 ### AFTER
@@ -157,16 +165,24 @@ $ gulp uninstall
 ## Package name rule
 
 1. Remove 'gulp-'
-2. Convert to camel case when call it
+2. [optional] Convert to CamelCase (You can specify non-converted package name. But you must convert to CamelCase when call it)
 3. "as" overwrites call name for shorter or else
 
 ### Example
-gulp-name -> pkg-name / call-name
-* gulp-uglify -> 'uglify' / uglify()
-* gulp-minify-css -> 'minify-css' / minifyCss()              //MUST call it by pkg.minifyCss()
-* gulp-html-minifier -> 'html-minifier as minHtm' / minHtm() //call it by pkg.htmlMinifier() DOESN'T work!
+
+| gulp-name       | pkg-name               | call-name         | note                               |
+|:----------------|:-----------------------|:------------------|:-----------------------------------|
+| gulp-uglify     | 'uglify'               | pkg.uglify()      |                                    |
+| gulp-minify-css | 'minifyCss'            | pkg.minifyCss()   | CamelCase of package name          |
+| gulp-minify-css | 'minify-css'           | pkg.minifyCss()   | Specify non-converted package name |
+| gulp-minify-css | 'minify-css as minCss' | pkg.minCss()      | Using alias                        |
 
 ## Changelog
+
+### 0.2.0 (2014-08-31)
+
+* Package name alias (using "as") supported
+* Removed internal properties from gulp object
 
 ### 0.1.3 (2014-07-27)
 

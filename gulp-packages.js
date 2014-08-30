@@ -13,7 +13,7 @@ module.exports = function (gulp, packages) {
     var pkg = packages[i].split(/\sas\s/, 2);
     pkg[1] = camel(pkg[pkg.length === 2 ? 1 : 0]);
     packages[i] = pkg[0];
-    var m = 'gulp-' + pkg[0]/*.replace(/([A-Z])/g, '-$1').toLowerCase()*/;
+    var m = 'gulp-' + pkg[0].replace(/([A-Z])/g, '-$1').toLowerCase();
     try {
       _pkgs.loaded[pkg[1]] = require(cwd + '/node_modules/' + m);
     } catch (e) {
