@@ -2,6 +2,7 @@
 module.exports = function (gulp, packages) {
   'use strict';
 
+  var me = 'gulp-packages';
   var _pkgs = { notInstalled: [], loaded: {} };
 
   var clc = require('cli-color');
@@ -16,7 +17,9 @@ module.exports = function (gulp, packages) {
     packages[i] = pkg[0];
     var m = 'gulp-' + pkg[0];
     try {
-      if (! _pkgs.loaded[pkg[1]]) {
+      if (_pkgs.loaded[pkg[1]]) {
+        console.warn('[' + clc.green(me) + '] ' + clc.red('Duplicate package: ' + pkg[1]));
+      } else {
         _pkgs.loaded[pkg[1]] = require(cwd + '/node_modules/' + m);
       }
     } catch (e) {

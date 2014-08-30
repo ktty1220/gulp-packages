@@ -179,10 +179,11 @@ $ gulp uninstall
 
 ## Changelog
 
-### 0.2.0 (2014-08-31)
+### 0.2.0 (2014-08-30)
 
 * Package name alias (using "as") supported
 * Removed internal properties from gulp object
+* Show warning when package duplicated
 
 ### 0.1.3 (2014-07-27)
 
