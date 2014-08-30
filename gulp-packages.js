@@ -1,19 +1,19 @@
-/*jshint node:true,loopfunc:true*/
-module.exports = function (gulp,packages) {
+/*jshint node:true*/
+module.exports = function (gulp, packages) {
   'use strict';
 
   var _pkgs = { notInstalled: [], loaded: {} };
 
   var clc = require('cli-color');
   var cwd = process.cwd();
-  var camel=function(str){
-    return str.replace(/-(\w)/g, function (match, char) { return char.toUpperCase(); })
-  }
+  var camel = function(str) {
+    return str.replace(/-(\w)/g, function (match, char) { return char.toUpperCase(); });
+  };
   for (var i = 0; i < packages.length; i++) {
-    var pkg=packages[i].split(/\sas\s/,2);
-    pkg[1]=camel(pkg[pkg.length==2?1:0]);
-    packages[i]=pkg[0];
-    var m = 'gulp-' + pkg[0]//.replace(/([A-Z])/g, '-$1').toLowerCase();
+    var pkg = packages[i].split(/\sas\s/, 2);
+    pkg[1] = camel(pkg[pkg.length === 2 ? 1 : 0]);
+    packages[i] = pkg[0];
+    var m = 'gulp-' + pkg[0]/*.replace(/([A-Z])/g, '-$1').toLowerCase()*/;
     try {
       _pkgs.loaded[pkg[1]] = require(cwd + '/node_modules/' + m);
     } catch (e) {
@@ -55,9 +55,9 @@ module.exports = function (gulp,packages) {
     var installed = Object.keys(require(cwd + '/package.json').devDependencies || {});
     var toUninstall = [];
     for (var i = 0; i < installed.length; i++) {
-      if (! /^gulp-/.test(installed[i])) continue;
-      if (installed[i]=='gulp-packages') continue;
-      if (packages.indexOf(installed[i].substr(5)) == -1) toUninstall.push(installed[i]);
+      if (! /^gulp-/.test(installed[i])) { continue; }
+      if (installed[i] === 'gulp-packages') { continue; }
+      if (packages.indexOf(installed[i].substr(5)) === -1) { toUninstall.push(installed[i]); }
     }
     npmCommand('uninstall', toUninstall, cb);
   });
