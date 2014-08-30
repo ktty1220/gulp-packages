@@ -1,3 +1,6 @@
+/*jshint node:true,forin:false,strict:false*/
+/*global suite,test,suiteSetup,suiteTeardown,setup,teardown*/
+
 var assert = require('chai').assert;
 var gulpPkgs = require('../gulp-packages');
 
