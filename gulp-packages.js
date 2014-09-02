@@ -62,7 +62,7 @@ module.exports = function (gulp, packages) {
     var toUninstall = [];
     for (var i = 0; i < installed.length; i++) {
       if (! /^gulp-/.test(installed[i])) { continue; }
-      if (installed[i] === 'gulp-packages') { continue; }
+      if (installed[i] === me) { continue; }
       if (packages.indexOf(installed[i].substr(5)) === -1) { toUninstall.push(installed[i]); }
     }
     npmCommand('uninstall', toUninstall, cb);
